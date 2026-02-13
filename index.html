@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Hari Valentine Iaa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --soft-blue: #a2d2ff;
+            --soft-pink: #ffafcc;
+            --deep-pink: #ff8fab;
+            --sky-blue: #bde0fe;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, var(--soft-blue), var(--soft-pink));
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-romantic {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .floating-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 6s ease-in infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        .card-glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+        }
+
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-valentine {
+            background: linear-gradient(to right, var(--deep-pink), var(--soft-blue));
+            transition: all 0.3s ease;
+        }
+
+        .btn-valentine:hover {
+            box-shadow: 0 10px 15px -3px rgba(255, 143, 171, 0.4);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Background Hearts Container -->
+    <div id="hearts-container"></div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 container mx-auto px-4 py-12 flex flex-col items-center">
+        
+        <!-- Hero Section -->
+        <div class="text-center mb-12 animate-fade-in">
+            <h1 class="text-5xl md:text-7xl font-romantic text-white drop-shadow-lg mb-4">
+                Selamat Hari Valentine, Iaa! 💙🌸
+            </h1>
+            <p class="text-xl md:text-2xl text-white opacity-90 font-semibold">
+                Setiap hari terasa seperti Valentine saat bersamamu.
+            </p>
+        </div>
+
+        <!-- Interactive Letter Card -->
+        <div class="card-glass p-8 md:p-12 max-w-2xl w-full shadow-2xl mb-12 text-center">
+            <div class="mb-6">
+                <span class="text-6xl">💌</span>
+            </div>
+            <h2 class="text-3xl font-romantic font-bold text-pink-600 mb-6">Pesan Untukmu</h2>
+            <div id="valentine-message" class="text-lg leading-relaxed text-slate-700 italic mb-8">
+                "Biru untuk ketenangan yang kamu berikan, Pink untuk cinta yang selalu mekar. Terima kasih sudah menjadi bagian terindah dalam hidupku, Iaa."
+            </div>
+            <button onclick="changeMessage()" class="btn-valentine text-white font-bold py-3 px-8 rounded-full shadow-lg">
+                Klik Untuk Kejutan ✨
+            </button>
+        </div>
+
+        <!-- Photo Gallery Placeholder -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl mb-12">
+            <div class="card-glass p-2 hover-scale">
+                <div class="bg-blue-100 rounded-xl h-64 flex items-center justify-center overflow-hidden">
+                    <span class="text-gray-400 italic text-sm text-center p-4"</span>
+                </div>
+                <p class="text-center py-2 font-semibold text-pink-500">Momen Manis</p>
+            </div>
+            <div class="card-glass p-2 hover-scale">
+                <div class="bg-pink-100 rounded-xl h-64 flex items-center justify-center overflow-hidden">
+                    <span class="https://files.catbox.moe/fwtirv.jpg">[Foto Momen Indah 2]</span>
+                </div>
+                <p class="text-center py-2 font-semibold text-blue-500">Senyummu</p>
+            </div>
+            <div class="card-glass p-2 hover-scale">
+                <div class="bg-blue-100 rounded-xl h-64 flex items-center justify-center overflow-hidden">
+                    <span class="text-gray-400 italic text-sm text-center p-4">[Foto Momen Indah 3]</span>
+                </div>
+                <p class="text-center py-2 font-semibold text-pink-500">Kebahagiaan</p>
+            </div>
+        </div>
+
+        <!-- Love Counter -->
+        <div class="text-center card-glass p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold mb-2">Seberapa besar cintaku hari ini?</h3>
+            <div class="text-4xl font-bold text-pink-600" id="love-percent">0%</div>
+            <div class="w-full bg-white/50 rounded-full h-4 mt-4 overflow-hidden">
+                <div id="love-bar" class="bg-gradient-to-right from-blue-400 to-pink-500 h-full w-0 transition-all duration-1000"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-20 text-white text-sm opacity-80 text-center">
+            <p>Dibuat dengan ❤️ untuk Iaa</p>
+            <p>© 2026 Hari Valentine Spesial</p>
+        </footer>
+    </main>
+
+    <script>
+        // Generate Floating Hearts
+        function createHeart() {
+            const container = document.getElementById('hearts-container');
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            
+            // Randomly choose between blue and pink heart
+            const isPink = Math.random() > 0.5;
+            heart.innerHTML = isPink ? '💖' : '💙';
+            
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            
+            container.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        setInterval(createHeart, 300);
+
+        // Message Changer
+        const messages = [
+            "Kamu adalah alasan aku tersenyum hari ini. 😊",
+            "Dunia terasa lebih berwarna sejak ada Iaa. 🌈",
+            "Iaa, kamu adalah favoritku selamanya! 🏆",
+            "Terima kasih telah menjadi versi terbaik dirimu. ✨",
+            "Happy Valentine! Semoga hari-harimu penuh cinta. 🍫"
+        ];
+        let messageIndex = 0;
+
+        function changeMessage() {
+            const msgElement = document.getElementById('valentine-message');
+            messageIndex = (messageIndex + 1) % messages.length;
+            
+            msgElement.style.opacity = 0;
+            setTimeout(() => {
+                msgElement.innerText = `"${messages[messageIndex]}"`;
+                msgElement.style.opacity = 1;
+            }, 300);
+
+            // Trigger confetti-like effect
+            for(let i=0; i<10; i++) {
+                setTimeout(createHeart, i * 50);
+            }
+        }
+
+        // Love Counter Animation
+        window.onload = () => {
+            let percent = 0;
+            const interval = setInterval(() => {
+                if (percent >= 1000) { // Over 100% because love for Iaa is infinite
+                    clearInterval(interval);
+                    document.getElementById('love-percent').innerText = "Tak Terhingga! ∞";
+                } else {
+                    percent += 7;
+                    document.getElementById('love-percent').innerText = percent + "%";
+                    document.getElementById('love-bar').style.width = Math.min(percent, 100) + "%";
+                }
+            }, 50);
+        };
+    </script>
+</body>
+  </html>
